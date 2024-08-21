@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.trios2024ammb.placebook.databinding.ActivityMapsBinding
 import android.Manifest
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.content.pm.PackageManager
+import android.util.Log
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -60,13 +62,49 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(this,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION ,
-                               Manifest.permission,ACCESS_COARSE_LOCATION),
+                Manifest.permission,ACCESS_COARSE_LOCATION),
             REQUEST_LOCATION)
     }
 
     companion object {
         private const val REQUEST_LOCATION = 1
         private const val TAG = "MapsActivity"
+    }
+
+
+    private fun getCurrentLocation() {
+        // 1
+        if ((ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) !=
+            PackageManager.PERMISSION_GRANTED) ||
+                (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED))
+        {
+            // 2
+            requestLocationPermissions()
+        } else {
+            // 3
+            fusedLocationClient.lastLocation.addOnCompleteListener {
+                val location = it.result
+                if (location != null) {
+                    // 4
+                    val latLng = LatLng(location.latitude, location.longitude)
+                    // 5
+                    mMap.addMarker(MarkerOptions().position(latLng)
+                        .title("You are here!"))
+                    // 6
+                    val update = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f)
+                    // 7
+                    mMap.moveCamera(update)
+                }
+                else
+                {
+                    // 8
+                    Log.e(TAG, "No location found")
+                }
+            }
+        }
     }
 
 
