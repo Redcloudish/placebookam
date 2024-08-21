@@ -70,9 +70,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-
-            REQUEST_LOCATION )
-
+            ),
+            REQUEST_LOCATION
+        )
     }
 
     companion object {
@@ -82,7 +82,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     private fun getCurrentLocation() {
-        // 1
+
         if ((ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -94,7 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             ) !=
                     PackageManager.PERMISSION_GRANTED)
         ) {
-            // 2
+
             requestLocationPermissions()
         }
         else
