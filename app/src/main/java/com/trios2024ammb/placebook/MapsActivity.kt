@@ -49,21 +49,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        getCurrentLocation()
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
+
     private fun setupLocationClient() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(this)
     }
+
     private fun requestLocationPermissions() {
-        ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION ,
-                Manifest.permission,ACCESS_COARSE_LOCATION),
-            REQUEST_LOCATION)
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission, ACCESS_COARSE_LOCATION
+            ),
+            REQUEST_LOCATION
+        )
     }
 
     companion object {
@@ -74,13 +81,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getCurrentLocation() {
         // 1
-        if ((ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) !=
-            PackageManager.PERMISSION_GRANTED) ||
-                (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED))
-        {
+        if ((ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+                    PackageManager.PERMISSION_GRANTED) ||
+            (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) !=
+                    PackageManager.PERMISSION_GRANTED)
+        ) {
             // 2
             requestLocationPermissions()
         } else {
@@ -91,15 +102,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     // 4
                     val latLng = LatLng(location.latitude, location.longitude)
                     // 5
-                    mMap.addMarker(MarkerOptions().position(latLng)
-                        .title("You are here!"))
+                    mMap.addMarker(
+                        MarkerOptions().position(latLng)
+                            .title("You are here!")
+                    )
                     // 6
                     val update = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f)
                     // 7
                     mMap.moveCamera(update)
-                }
-                else
-                {
+                } else {
                     // 8
                     Log.e(TAG, "No location found")
                 }
@@ -107,5 +118,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.size == 2 && grantResults[0] ==
+                PackageManager.PERMISSION_GRANTED && grantResults [1] ==
+                PackageManager.PERMISSION_GRANTED ) {
+                getCurrentLocation()
+            }
+            else {
+                Log.e(TAG, "Location permission denied")
+            }
+        }
+    }
 }
