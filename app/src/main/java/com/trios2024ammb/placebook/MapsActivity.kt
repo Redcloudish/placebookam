@@ -17,12 +17,14 @@ import android.Manifest
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.content.pm.PackageManager
 import android.util.Log
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
-
+    //private var locationRequest: LocationRequest? = null
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private lateinit var binding: ActivityMapsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,10 +69,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             this,
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission, ACCESS_COARSE_LOCATION
-            ),
-            REQUEST_LOCATION
-        )
+                Manifest.permission.ACCESS_COARSE_LOCATION
+
+            REQUEST_LOCATION )
+
     }
 
     companion object {
@@ -94,24 +96,47 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         ) {
             // 2
             requestLocationPermissions()
-        } else {
-            // 3
+        }
+        else
+        {
+//            if (locationRequest == null) {
+//                locationRequest = LocationRequest.create()
+//                locationRequest?.let { locationRequest ->
+//
+//                    locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+//
+//                    locationRequest.interval = 5000
+//
+//                    locationRequest.fastestInterval = 1000
+//
+//                    val locationCallback = object : LocationCallback() {
+//                        override fun onLocationResult(locationResult: LocationResult?) {
+//                            getCurrentLocation()
+//                        }
+//                    }
+//
+//                    fusedLocationClient.requestLocationUpdates(locationRequest,
+//                        locationCallback, null)
+//                }
+//            }
+            mMap.isMyLocationEnabled = true
+
             fusedLocationClient.lastLocation.addOnCompleteListener {
                 val location = it.result
                 if (location != null) {
-                    // 4
+
                     val latLng = LatLng(location.latitude, location.longitude)
-                    // 5
-                    mMap.addMarker(
-                        MarkerOptions().position(latLng)
-                            .title("You are here!")
-                    )
-                    // 6
+                   // mMap.clear()
+                   // mMap.addMarker(
+                     //   MarkerOptions().position(latLng)
+                           // .title("You are here!")
+                  //  )
+
                     val update = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f)
-                    // 7
+
                     mMap.moveCamera(update)
                 } else {
-                    // 8
+
                     Log.e(TAG, "No location found")
                 }
             }
