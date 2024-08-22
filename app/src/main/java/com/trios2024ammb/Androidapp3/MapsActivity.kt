@@ -1,4 +1,4 @@
-package com.trios2024ammb.placebook
+package com.trios2024ammb.Androidapp3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,14 +12,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.trios2024ammb.placebook.databinding.ActivityMapsBinding
+import com.trios2024ammb.Androidapp3.databinding.ActivityMapsBinding
 import android.Manifest
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.content.pm.PackageManager
 import android.util.Log
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     //private var locationRequest: LocationRequest? = null
@@ -40,23 +36,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setupLocationClient()
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getCurrentLocation()
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Added marker on the spa and move camera + address (3275 Hwy 7 Unit 2, Markham, ON L3R 3P9)
+        val spa = LatLng(-79.0, 43.0)
+        mMap.addMarker(MarkerOptions().position(spa).title("Marker on Spa"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(spa))
     }
 
     private fun setupLocationClient() {
@@ -99,26 +86,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         else
         {
-//            if (locationRequest == null) {
-//                locationRequest = LocationRequest.create()
-//                locationRequest?.let { locationRequest ->
 //
-//                    locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-//
-//                    locationRequest.interval = 5000
-//
-//                    locationRequest.fastestInterval = 1000
-//
-//                    val locationCallback = object : LocationCallback() {
-//                        override fun onLocationResult(locationResult: LocationResult?) {
-//                            getCurrentLocation()
-//                        }
-//                    }
-//
-//                    fusedLocationClient.requestLocationUpdates(locationRequest,
-//                        locationCallback, null)
-//                }
-//            }
             mMap.isMyLocationEnabled = true
 
             fusedLocationClient.lastLocation.addOnCompleteListener {
@@ -126,11 +94,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (location != null) {
 
                     val latLng = LatLng(location.latitude, location.longitude)
-                   // mMap.clear()
-                   // mMap.addMarker(
-                     //   MarkerOptions().position(latLng)
-                           // .title("You are here!")
-                  //  )
+
 
                     val update = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f)
 

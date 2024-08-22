@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.trios2024ammb.placebook"
+    namespace = "com.trios2024ammb.Androidapp3"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.trios2024ammb.placebook"
+        applicationId = "com.trios2024ammb.Androidapp3"
         minSdk = 29
         targetSdk = 34
         versionCode = 1

@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PlaceBook"
+rootProject.name = "Androidapp3"
 include(":app")

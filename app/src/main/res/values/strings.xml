@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PlaceBook</string>
+    <string name="app_name">Androidapp3</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="google_maps_key"
         templateMergeStrategy="preserve"
